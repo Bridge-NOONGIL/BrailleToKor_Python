@@ -6,43 +6,6 @@ brailles = ['⠀','⠮','⠐','⠼','⠫','⠩','⠯','⠄','⠷','⠾','⠡','�
 
 class BrailleToKor:
 
-    # 끊은 '단어' 점자를 한글로 바꾸는 역할
-    def brailleTosyllable(word: str):
-        return ""
-
-    # 전체 문장 번역
-    def translation(input):
-
-        result = ""
-
-        # 숫자 번역
-        # 문장부호 번역
-
-        for word in input:
-            replacedWord = word
-            replace123456Flag = False # 옹옹 처리
-            replace1245Flag = False # 운운 처리
-
-            if "⠛⠛" in word:
-                replacedWord = word.replace("⠛⠛", "")
-                replace1245Flag = True
-            if replace1245Flag:
-                replacedWord = replacedWord.replace("⠛", "")
-                replace1245Flag = False
-
-            if "⠿⠿" in word:
-                replacedWord = word.replace("⠿⠿", "")
-                replace123456Flag = True
-            if replace123456Flag:
-                replacedWord = replacedWord.replace("⠿", "")
-                replace123456Flag = False
-
-
-            result += BrailleToKor.brailleTosyllable(replacedWord)
-            result += ""
-
-        return result
-
     # 점자인지 확인하는 함수
     def isBraille(input):
         for i in input:
@@ -51,10 +14,6 @@ class BrailleToKor:
             else:
                 return False
         return False
-
-    # 끊은 '단어' 점자를 한글로 바꾸는 역할
-    def brailleTosyllable(word):
-        return ""
 
 
 
@@ -92,3 +51,45 @@ class BrailleToKor:
         uni = chr(uniValue)
 
         return uni
+
+    # 끊은 '단어' 점자를 한글로 바꾸는 역할
+    def brailleTosyllable(word: str):
+        return ""
+
+
+    # 전체 문장 번역
+    def translation(input):
+
+        result = ""
+
+        # 숫자 번역
+        # 문장부호 번역
+
+        for word in input:
+            replacedWord = word
+            replace123456Flag = False # 옹옹 처리
+            replace1245Flag = False # 운운 처리
+
+            if "⠛⠛" in word:
+                replacedWord = word.replace("⠛⠛", "")
+                replace1245Flag = True
+            if replace1245Flag:
+                replacedWord = replacedWord.replace("⠛", "")
+                replace1245Flag = False
+
+            if "⠿⠿" in word:
+                replacedWord = word.replace("⠿⠿", "")
+                replace123456Flag = True
+            if replace123456Flag:
+                replacedWord = replacedWord.replace("⠿", "")
+                replace123456Flag = False
+
+
+            result += BrailleToKor.brailleTosyllable(replacedWord)
+            result += ""
+
+        return result
+
+
+
+
