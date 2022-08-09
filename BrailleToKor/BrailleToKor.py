@@ -1,13 +1,16 @@
 from KorData import CHO, JUNG, JONG
+from BrailleData import abb_word_dict
 
 brailles = ['⠀','⠮','⠐','⠼','⠫','⠩','⠯','⠄','⠷','⠾','⠡','⠬','⠠','⠤','⠨','⠌','⠴','⠂','⠆','⠒','⠲','⠢',
         '⠖','⠶','⠦','⠔','⠱','⠰','⠣','⠿','⠜','⠹','⠈','⠁','⠃','⠉','⠙','⠑','⠋','⠛','⠓','⠊','⠚','⠅',
         '⠇','⠍','⠝','⠕','⠏','⠟','⠗','⠎','⠞','⠥','⠧','⠺','⠭','⠽','⠵','⠪','⠳','⠻','⠘','⠸']
 
 class BrailleToKor:
+    def __init__(self) -> None:
+        pass
 
     # 점자인지 확인하는 함수
-    def isBraille(input):
+    def isBraille(self, input):
         for i in input:
             if i in brailles:
                 return True
@@ -18,7 +21,7 @@ class BrailleToKor:
 
 
     # 초성 + 중성 (+ 종성)을 합쳐 하나의 음절을 반환
-    def JamoCombination(c1, c2, c3):
+    def JamoCombination(self, c1, c2, c3):
         cho_i = 0
         jung_i = 0
         jong_i = 0
@@ -53,12 +56,69 @@ class BrailleToKor:
         return uni
 
     # 끊은 '단어' 점자를 한글로 바꾸는 역할
-    def brailleTosyllable(word: str):
+    def brailleTosyllable(self, word: str):
+        
+        brailleWord = word # brailleWord로 번역을 함
+
+        abb_braille = "" # 약어 점자
+        abb_kor = "" # 약어
+
+        wordResult = "" # 번역 결과
+
+        cho = "" # 초성
+        jung = "" # 중성
+        jong = "" # 종성
+
+        # 초성/중성/종성 정해졌다는 flag
+        selectedCho = False
+        selectedJung = False
+        selectedJong = False
+
+        # ㅖ + 받침 있을 때 flag (continue 두 번 하기 위해서)
+        ye_jong = False
+
+        # 껏의 된소리표 flag
+        flag_14 = False 
+
+        # 마지막 음절의 인덱스
+        last = brailleWord.count - 1
+
+        # 단어 자체가 약어라면 바로 점자로 번역해서 리턴
+        if word in abb_word_dict.keys():
+            wordResult += abb_word_dict[word]
+            return wordResult
+        else: # 단어에 약어가 포함
+            for (key, value) in abb_word_dict:
+                if key in word:
+                    abb_braille = key
+                    abb_kor = value
+
+            if abb_braille != "": # 위 Step에 의해 약어가 포함되어있는 것을 확인했다면
+                # [다만] 위에 제시된 말들의 앞에 다른 음절이 붙어 쓰일 때에는 약어를 사용하여 적지 않는다.
+                if word[0] != abb_braille[0]: # 종성이 가장 먼저 오는 경우 X
+                    pass
+                else:
+                    wordResult += abb_kor
+                    brailleWord = brailleWord.replace(abb_braille, "")
+                    last = brailleWord.count - 1 # 갱신
+
+        for i in range(brailleWord.count):
+            letter_front = ""
+            letter = brailleWord[i]
+            letter_back = ""
+            letter_back_back  = ""
+
+            letter_isBraille = self.isBraille(letter)
+
+            
+
+        
+
         return ""
 
 
     # 전체 문장 번역
-    def translation(input):
+    def translation(self, input):
 
         result = ""
 
@@ -92,4 +152,5 @@ class BrailleToKor:
 
 
 
-
+if __name__ == "__main__":
+    b = BrailleToKor()
