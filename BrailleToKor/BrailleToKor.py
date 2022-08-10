@@ -1,5 +1,6 @@
+from ast import And
 from KorData import CHO, JUNG, JONG
-from BrailleData import abb_word_dict
+from BrailleData import abb_word_dict, abb_cho_jung_jong_dict
 
 brailles = ['⠀','⠮','⠐','⠼','⠫','⠩','⠯','⠄','⠷','⠾','⠡','⠬','⠠','⠤','⠨','⠌','⠴','⠂','⠆','⠒','⠲','⠢',
         '⠖','⠶','⠦','⠔','⠱','⠰','⠣','⠿','⠜','⠹','⠈','⠁','⠃','⠉','⠙','⠑','⠋','⠛','⠓','⠊','⠚','⠅',
@@ -109,9 +110,59 @@ class BrailleToKor:
             letter_back_back  = ""
 
             letter_isBraille = self.isBraille(letter)
+            letter_back_isBraille = False
+            letter_back_back_isBraille = False
 
-            
 
+            if letter_isBraille == False:
+                wordResult += letter
+                continue
+                
+            if i > 0:
+                letter_front = brailleWord[i-1]
+
+            if i < last:
+                letter_back = brailleWord[i+1]
+                letter_back_isBraille = self.isBraille(letter_back)
+
+            if i < last - 1:
+                letter_back_back = brailleWord[i+2]
+                letter_back_back_isBraille = self.isBraille(letter_back_back)
+
+            if letter == "⠤": # 붙임표면 pass
+                cho = ""
+                jung = ""
+                jong = ""
+                selectedCho = False
+                selectedJung = False
+                selectedJong = False
+
+                continue
+
+            if flag_14: # 껏 flag
+                flag_14 = False
+                continue
+
+            # 것, 껏 처리
+            if (letter == "⠠") and ((letter_back + letter_back_back) in abb_cho_jung_jong_dict.keys()): # 껏
+                cho = "ㄲ"
+                jung = "ㅓ"
+                jong = "ㅅ"
+
+                selectedCho = True
+                selectedJung = True
+                selectedJong = True
+
+                flag_14 = True # 된소리표 Pass
+                continue
+            elif (selectedCho == False) and ((letter + letter_back) in abb_cho_jung_jong_dict.keys()): # 것
+                cho = "ㄱ"
+                jung = "ㅓ"
+                jong = "ㅅ"
+                selectedCho = True
+                selectedJung = True
+                selectedJong = True
+                continue #205
         
 
         return ""
