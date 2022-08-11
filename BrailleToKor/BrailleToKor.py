@@ -1,6 +1,7 @@
 from ast import And
+# from BrailleToKor.BrailleData import JUNG_braille
 from KorData import CHO, JUNG, JONG
-from BrailleData import abb_word_dict, abb_cho_jung_jong_dict
+from BrailleData import abb_word_dict, abb_cho_jung_jong_dict, JUNG_braille, double_JUNG_braille, JONG_braille, abb_jung_jong_dict, double_JONG_braille, double_CHO_braille, abb_CHO_braille, abb_cho_dict, CHO_braille
 
 brailles = ['⠀','⠮','⠐','⠼','⠫','⠩','⠯','⠄','⠷','⠾','⠡','⠬','⠠','⠤','⠨','⠌','⠴','⠂','⠆','⠒','⠲','⠢',
         '⠖','⠶','⠦','⠔','⠱','⠰','⠣','⠿','⠜','⠹','⠈','⠁','⠃','⠉','⠙','⠑','⠋','⠛','⠓','⠊','⠚','⠅',
@@ -162,8 +163,103 @@ class BrailleToKor:
                 selectedCho = True
                 selectedJung = True
                 selectedJong = True
-                continue #205
-        
+                continue
+
+            if ye_jong:
+                ye_jong = False
+                continue
+
+            #초성 처리
+            if selectedCho == False:
+                # 초성 없이 중성이 먼저 나오는 경우
+                if letter in JUNG_braille.keys(): # 초성 'ㅇ'
+                    cho = "ㅇ"
+                    selectedCho = True
+                    selectedJung = True
+
+                    if (letter+letter_back) in double_JUNG_braille.keys():
+                        jung = double_JUNG_braille[letter+letter_back]
+                        if letter_back_back not in JONG_braille.keys(): # 이중 종성 + 종성이 없는 경우
+                            jong = " "
+                            selectedJong = True
+                        continue
+                    else: # 기본 중성일 때
+                        jung = JUNG_braille[letter]
+
+                    if letter_back not in JONG_braille.keys(): # letter_back이 종성이 아닐 때
+                        jong = " " # 종성이 없음
+                        selectedJong = True
+                    else:
+                        continue
+
+                elif letter in abb_jung_jong_dict.keys(): # 초성이 ㅇ이고 letter가 중+종 약자일 때
+                    cho = "ㅇ"
+                    selectedCho = True
+
+                    jung = abb_jung_jong_dict[letter][0]
+                    jong = abb_jung_jong_dict[letter][1]
+
+                    selectedJung = True
+                    selectedJong = True
+
+                    if letter_back in JONG_braille.keys(): # letter_back이 종성일 때 => 겹받침
+                        try:
+                            jong = double_JONG_braille[jong + letter_back]
+                        except:
+                            jong = " "
+                        continue
+                
+                # 'ㅏ' 약자일 때 - 초성 리스트에 존재하고(이 때 'ㄱ','ㄹ','ㅅ' 제외, letter_back이 초성이거나 종성일 때)
+                elif (letter in abb_CHO_braille.keys()) and (((letter_back in CHO_braille.keys()) or (letter_back in JONG_braille.keys()) or (i == last) or (letter_back == "⠫") or (letter_back == "⠇") or (letter_back == "⠤")) or (letter_back_isBraille == False)):
+                    cho = CHO_braille[letter]
+                    jung = "ㅏ"
+                    selectedCho = True
+                    selectedJung = True
+
+                    if letter_back == "⠌":
+                        if letter_back_back in JONG_braille.keys(): # ex. 톈 case 해결 위해
+                            jung = "ㅖ"
+                            ye_jong = True
+                            continue
+
+                        if cho == "ㅎ":
+                            jung = "ㅖ"
+                            jong = " "
+                        else:
+                            jung = "ㅏ"
+                            jong = "ㅆ"
+
+                        selectedJong = True
+                        continue
+                    
+                    elif letter_back == "⠤": # 초성처리에서 letter_back이 붙임표일 때 음절 완성
+                        jong = " "
+                        selectedJong = True
+
+                    elif letter_back not in JONG_braille.keys():
+                        jong = " "
+                        selectedJong = True
+                
+                elif letter in abb_cho_dict.keys(): # '가', '사'
+                    cho = abb_cho_dict[letter]
+                    jung = "ㅏ"
+                    selectedCho = True
+                    selectedJung = True
+
+                    if letter_back == "⠌": # 뒤에 3, 4점
+                        jung = "ㅏ"
+                        jong = "ㅆ"
+
+                        selectedJong = True
+                        continue
+
+                    elif letter_back not in JONG_braille.keys(): # 뒤에 종성이 없음
+                        jong = " "
+                        selectedJong = True
+
+                    elif letter == "⠠": # 6점 (된소리)
+                        # 'ㅏ' 약자(까, 싸 제외)
+                        print('line #320')
 
         return ""
 
