@@ -259,7 +259,53 @@ class BrailleToKor:
 
                     elif letter == "⠠": # 6점 (된소리)
                         # 'ㅏ' 약자(까, 싸 제외)
-                        print('line #320')
+                        if (letter_back in abb_cho_dict.keys()) and ((letter_back_back in CHO_braille.keys()) or (letter_back_back in JONG_braille.keys()) or ( i+1 == last) or (letter_back_back == "⠫") or (letter_back_back == "⠇")) or (letter_back_back_isBraille == False):
+                            try:
+                                cho = CHO_braille[letter + letter_back]
+                            except:
+                                cho = " "
+                            
+                            jung = "ㅏ"
+                            selectedCho = True
+                            selectedJung = True
+
+                            if letter_back_back == "⠌": # 땄 같은 경우
+                                jong = "ㅆ"
+                                continue
+                        
+                            elif letter_back_back in JONG_braille.keys(): # 종성이 없을 때. 따.
+                                jong = " "
+                                selectedJong = True
+
+                        
+                    elif letter_back in abb_cho_dict.keys(): # 까, 싸 - letter_back이 가, 사 일 때
+                        try:
+                            cho = abb_cho_dict[letter + letter_back][0]
+                        except:
+                            cho = " "
+                        try:
+                            jung = abb_cho_dict[letter + letter_back][1]
+                        except:
+                            jung = " " 
+
+                        selectedCho = True
+                        selectedJung = True
+
+                        if letter_back_back == "⠌":
+                            jong = "ㅆ"
+                        
+                        if letter_back_back not in JONG_braille.keys():
+                            jong = " "
+                            selectedJong = True
+
+                    elif letter_back not in CHO_braille.keys(): # 된소리가 아니라 'ㅅ'일 때
+                        try:
+                            cho = CHO_braille[letter]
+                        except:
+                            cho = " "
+                        selectedCho = True 
+
+                        print("LINE #366")
 
         return ""
 
