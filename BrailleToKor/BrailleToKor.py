@@ -305,9 +305,67 @@ class BrailleToKor:
                             cho = " "
                         selectedCho = True 
 
-                        print("LINE #366")
+                    elif letter_back not in CHO_braille: # 된소리가 아니라 'ㅅ'일 때
+                        try: 
+                            cho = CHO_braille[letter]
+                        except:
+                            cho = " "
+                        selectedCho = True
 
-        return ""
+                    continue
+                
+                elif letter in CHO_braille.keys():
+                    cho = CHO_braille[letter]
+                    selectedCho = True
+                else:
+                    continue
+            
+            # 중성 처리
+            if selectedCho == True and selectedJung == False:
+                
+                if letter in abb_jung_jong_dict.keys(): # 중성 + 종성 약자
+                    jung = abb_jung_jong_dict[letter][0]
+                    jong = abb_jung_jong_dict[letter][1]
+
+                    selectedJung = True
+                    selectedJong = True
+
+                    if (jong + letter_back) in double_JONG_braille.keys(): # 이중 종성(겹받침)
+                        jong = double_JONG_braille[jong + letter_back]
+                        continue
+
+                elif letter in JUNG_braille.keys(): # 중성일 때
+                    jung = JUNG_braille[letter]
+                    selectedJung = True
+
+                    if (jong + letter_back) in double_JONG_braille.keys(): # 이중 종성(겹받침)
+                        jong = double_JONG_braille[jong + letter_back]
+                        continue
+                
+                elif letter in JUNG_braille.keys(): # 중성일 때
+                    jung = JUNG_braille[letter]
+                    selectedJung = True
+
+                    if (letter+letter_back) in double_JUNG_braille.keys(): # 이중 중성
+                        jung = double_JUNG_braille[letter+letter_back]
+
+                        if letter_back_back not in JONG_braille.keys():
+                            jong = " "
+                            selectedJong = True
+
+                        continue
+                    elif letter_back not in JONG_braille.keys(): # 중성 + 종성이 없는 경우
+                        jong = " "
+                        selectedJong = True
+
+                    elif letter_back in JONG_braille.keys(): # 종성이 있으면 continue
+                        continue
+
+            # 종성 처리
+            if selectedCho == True and selectedJung == True and selectedJong == False:
+                print("LINE #425")    
+
+        return wordResult
 
 
     # 전체 문장 번역
