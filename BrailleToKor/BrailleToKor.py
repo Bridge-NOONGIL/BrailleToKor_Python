@@ -102,7 +102,7 @@ class BrailleToKor:
                 else:
                     wordResult += abb_kor
                     brailleWord = brailleWord.replace(abb_braille, "")
-                    last = brailleWord.count - 1 # 갱신
+                    last = len(brailleWord) - 1 # 갱신
 
         for i in range(len(brailleWord)):
             # letter_front = ""
@@ -421,4 +421,4 @@ class BrailleToKor:
 
 if __name__ == "__main__":
     b = BrailleToKor()
-    print(b.translation("⠨⠎⠢⠨⠐⠥"))
+    print(b.translation("⠨⠎⠢⠨"))
