@@ -83,7 +83,7 @@ class BrailleToKor:
         flag_14 = False 
 
         # 마지막 음절의 인덱스
-        last = brailleWord.count - 1
+        last = len(brailleWord) - 1
 
         # 단어 자체가 약어라면 바로 점자로 번역해서 리턴
         if word in abb_word_dict.keys():
@@ -104,7 +104,7 @@ class BrailleToKor:
                     brailleWord = brailleWord.replace(abb_braille, "")
                     last = brailleWord.count - 1 # 갱신
 
-        for i in range(brailleWord.count):
+        for i in range(len(brailleWord)):
             letter_front = ""
             letter = brailleWord[i]
             letter_back = ""
@@ -363,7 +363,29 @@ class BrailleToKor:
 
             # 종성 처리
             if selectedCho == True and selectedJung == True and selectedJong == False:
-                print("LINE #425")    
+                if letter in JONG_braille.keys():
+                    jong = JONG_braille[letter]
+                    selectedJong = True
+
+                    if (jong+letter_back) in double_JONG_braille.keys(): # 이중 종성
+                        jong = double_JONG_braille[jong + letter_back]
+                        continue
+            
+            # 음절 완성
+            if selectedCho == True and selectedJung == True and selectedJong == True:
+                # 제 16항: '성, 썽, 정, 쩡, 청'은 'ㅅ,  ㅆ,  ㅈ,  ㅉ,  ㅊ’  다음에  'ㅕㅇ'의 약자를 적어 나타낸다.
+                if (cho == "ㅅ" or cho == "ㅆ" or cho == "ㅈ" or cho == "ㅉ" or cho == "ㅊ") and jung == "ㅕ" and jong == "ㅇ":
+                    jung = "ㅓ"
+                
+                wordResult += self.JamoCombination(cho, jung, jong)
+
+                selectedCho = False
+                selectedJung = False
+                selectedJong = False
+
+                cho = ""
+                jung = ""
+                jong = ""
 
         return wordResult
 
@@ -396,7 +418,7 @@ class BrailleToKor:
                 replace123456Flag = False
 
 
-            result += BrailleToKor.brailleTosyllable(replacedWord)
+            result += self.brailleTosyllable(replacedWord)
             result += ""
 
         return result
@@ -405,3 +427,4 @@ class BrailleToKor:
 
 if __name__ == "__main__":
     b = BrailleToKor()
+    print(b.translation("⠨⠎⠢⠨⠐⠥"))
