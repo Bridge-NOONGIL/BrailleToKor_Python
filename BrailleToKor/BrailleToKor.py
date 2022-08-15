@@ -105,7 +105,7 @@ class BrailleToKor:
                     last = brailleWord.count - 1 # 갱신
 
         for i in range(len(brailleWord)):
-            letter_front = ""
+            # letter_front = ""
             letter = brailleWord[i]
             letter_back = ""
             letter_back_back  = ""
@@ -168,6 +168,8 @@ class BrailleToKor:
             if ye_jong:
                 ye_jong = False
                 continue
+            
+            print("검토 ㅇㄴㄹ")
 
             #초성 처리
             if selectedCho == False:
@@ -210,7 +212,7 @@ class BrailleToKor:
                         continue
                 
                 # 'ㅏ' 약자일 때 - 초성 리스트에 존재하고(이 때 'ㄱ','ㄹ','ㅅ' 제외, letter_back이 초성이거나 종성일 때)
-                elif (letter in abb_CHO_braille.keys()) and (((letter_back in CHO_braille.keys()) or (letter_back in JONG_braille.keys()) or (i == last) or (letter_back == "⠫") or (letter_back == "⠇") or (letter_back == "⠤")) or (letter_back_isBraille == False)):
+                elif (letter in abb_CHO_braille.keys()) and ((letter_back in CHO_braille.keys() or letter_back in JONG_braille.keys() or i == last or letter_back == "⠫" or letter_back == "⠇" or letter_back == "⠤") or letter_back_isBraille == False) :
                     cho = CHO_braille[letter]
                     jung = "ㅏ"
                     selectedCho = True
@@ -241,7 +243,7 @@ class BrailleToKor:
                         selectedJong = True
                 
                 elif letter in abb_cho_dict.keys(): # '가', '사'
-                    cho = abb_cho_dict[letter]
+                    cho = abb_cho_dict[letter][0]
                     jung = "ㅏ"
                     selectedCho = True
                     selectedJung = True
@@ -259,7 +261,7 @@ class BrailleToKor:
 
                     elif letter == "⠠": # 6점 (된소리)
                         # 'ㅏ' 약자(까, 싸 제외)
-                        if (letter_back in abb_cho_dict.keys()) and ((letter_back_back in CHO_braille.keys()) or (letter_back_back in JONG_braille.keys()) or ( i+1 == last) or (letter_back_back == "⠫") or (letter_back_back == "⠇")) or (letter_back_back_isBraille == False):
+                        if letter_back in abb_CHO_braille.keys() and ((letter_back_back in CHO_braille.keys() or letter_back_back in JONG_braille.keys() or i+1 == last or letter_back_back == "⠫" or letter_back_back == "⠇") or letter_back_back_isBraille == False):
                             try:
                                 cho = CHO_braille[letter + letter_back]
                             except:
@@ -273,7 +275,7 @@ class BrailleToKor:
                                 jong = "ㅆ"
                                 continue
                         
-                            elif letter_back_back in JONG_braille.keys(): # 종성이 없을 때. 따.
+                            elif letter_back_back not in JONG_braille.keys(): # 종성이 없을 때. 따.
                                 jong = " "
                                 selectedJong = True
 
@@ -305,9 +307,9 @@ class BrailleToKor:
                             cho = " "
                         selectedCho = True 
 
-                    elif letter_back not in CHO_braille: # 된소리가 아니라 'ㅅ'일 때
+                    elif letter_back in CHO_braille: # 된소리 + 초성
                         try: 
-                            cho = CHO_braille[letter]
+                            cho = double_CHO_braille[letter + letter_back]
                         except:
                             cho = " "
                         selectedCho = True
@@ -329,14 +331,6 @@ class BrailleToKor:
 
                     selectedJung = True
                     selectedJong = True
-
-                    if (jong + letter_back) in double_JONG_braille.keys(): # 이중 종성(겹받침)
-                        jong = double_JONG_braille[jong + letter_back]
-                        continue
-
-                elif letter in JUNG_braille.keys(): # 중성일 때
-                    jung = JUNG_braille[letter]
-                    selectedJung = True
 
                     if (jong + letter_back) in double_JONG_braille.keys(): # 이중 종성(겹받침)
                         jong = double_JONG_braille[jong + letter_back]
