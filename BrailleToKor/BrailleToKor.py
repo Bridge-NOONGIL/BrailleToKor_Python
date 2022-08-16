@@ -1,4 +1,4 @@
-from ast import And
+import re
 # from BrailleToKor.BrailleData import JUNG_braille
 from KorData import CHO, JUNG, JONG
 from BrailleData import abb_word_dict, abb_cho_jung_jong_dict, JUNG_braille, double_JUNG_braille, JONG_braille, abb_jung_jong_dict, double_JONG_braille, double_CHO_braille, abb_CHO_braille, abb_cho_dict, CHO_braille
@@ -105,7 +105,7 @@ class BrailleToKor:
                     last = len(brailleWord) - 1 # 갱신
 
         for i in range(len(brailleWord)):
-            # letter_front = ""
+            letter_front = ""
             letter = brailleWord[i]
             letter_back = ""
             letter_back_back  = ""
@@ -165,11 +165,10 @@ class BrailleToKor:
                 selectedJong = True
                 continue
 
-            if ye_jong:
+            if ye_jong == True:
                 ye_jong = False
                 continue
-            
-            print("검토 ㅇㄴㄹ")
+
 
             #초성 처리
             if selectedCho == False:
@@ -259,25 +258,25 @@ class BrailleToKor:
                         jong = " "
                         selectedJong = True
 
-                    elif letter == "⠠": # 6점 (된소리)
-                        # 'ㅏ' 약자(까, 싸 제외)
-                        if letter_back in abb_CHO_braille.keys() and ((letter_back_back in CHO_braille.keys() or letter_back_back in JONG_braille.keys() or i+1 == last or letter_back_back == "⠫" or letter_back_back == "⠇") or letter_back_back_isBraille == False):
-                            try:
-                                cho = CHO_braille[letter + letter_back]
-                            except:
-                                cho = " "
-                            
-                            jung = "ㅏ"
-                            selectedCho = True
-                            selectedJung = True
-
-                            if letter_back_back == "⠌": # 땄 같은 경우
-                                jong = "ㅆ"
-                                continue
+                elif letter == "⠠": # 6점 (된소리)
+                    # 'ㅏ' 약자(까, 싸 제외)
+                    if letter_back in abb_CHO_braille.keys() and ((letter_back_back in CHO_braille.keys() or letter_back_back in JONG_braille.keys() or i+1 == last or letter_back_back == "⠫" or letter_back_back == "⠇") or letter_back_back_isBraille == False):
+                        try:
+                            cho = CHO_braille[letter + letter_back]
+                        except:
+                            cho = " "
                         
-                            elif letter_back_back not in JONG_braille.keys(): # 종성이 없을 때. 따.
-                                jong = " "
-                                selectedJong = True
+                        jung = "ㅏ"
+                        selectedCho = True
+                        selectedJung = True
+
+                        if letter_back_back == "⠌": # 땄 같은 경우
+                            jong = "ㅆ"
+                            continue
+                    
+                        elif letter_back_back not in JONG_braille.keys(): # 종성이 없을 때. 따.
+                            jong = " "
+                            selectedJong = True
 
                         
                     elif letter_back in abb_cho_dict.keys(): # 까, 싸 - letter_back이 가, 사 일 때
@@ -392,7 +391,7 @@ class BrailleToKor:
         # 숫자 번역
         # 문장부호 번역
 
-        for word in input:
+        for word in (input.replace('⠀', ' ')).split():
             replacedWord = word
             replace123456Flag = False # 옹옹 처리
             replace1245Flag = False # 운운 처리
@@ -413,7 +412,7 @@ class BrailleToKor:
 
 
             result += self.brailleTosyllable(replacedWord)
-            result += ""
+            result += " "
 
         return result
 
@@ -421,4 +420,4 @@ class BrailleToKor:
 
 if __name__ == "__main__":
     b = BrailleToKor()
-    print(b.translation("⠨⠎⠢⠨"))
+    print(b.translation("⠠⠕⠫⠁⠨⠶⠗⠟⠕⠀⠣⠉⠕⠑⠡⠀⠨⠎⠢⠨⠐⠮⠀⠘⠗⠍⠈⠥⠀⠕⠁⠚⠟⠀⠇⠐⠣⠢⠕⠀⠑⠒⠴⠨⠕⠀⠣⠒⠴⠣⠀⠨⠎⠢⠨⠐⠥⠀⠙⠬⠚⠡⠚⠈⠥⠨⠀⠚⠉⠵⠀⠇⠐⠣⠢⠕⠀⠕⠌⠎⠊⠥⠀⠈⠪⠀⠠⠊⠪⠄⠮⠀⠙⠱⠨⠕⠀⠑⠥⠄⠚⠉⠵⠀⠈⠻⠍⠫⠀⠑⠒⠴⠠⠪⠃⠉⠕⠊"))
