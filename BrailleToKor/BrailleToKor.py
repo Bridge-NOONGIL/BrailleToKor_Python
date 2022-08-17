@@ -1,5 +1,4 @@
-import re
-# from BrailleToKor.BrailleData import JUNG_braille
+import NumberFunc
 from KorData import CHO, JUNG, JONG
 from BrailleData import abb_word_dict, abb_cho_jung_jong_dict, JUNG_braille, double_JUNG_braille, JONG_braille, abb_jung_jong_dict, double_JONG_braille, double_CHO_braille, abb_CHO_braille, abb_cho_dict, CHO_braille
 
@@ -389,8 +388,8 @@ class BrailleToKor:
         result = ""
 
         # 숫자 번역
+        input = NumberFunc.translateNumber(input)
         # 문장부호 번역
-
         for word in (input.replace('⠀', ' ')).split():
             replacedWord = word
             replace123456Flag = False # 옹옹 처리
@@ -420,4 +419,4 @@ class BrailleToKor:
 
 if __name__ == "__main__":
     b = BrailleToKor()
-    print(b.translation("⠠⠕⠫⠁⠨⠶⠗⠟⠕⠀⠣⠉⠕⠑⠡⠀⠨⠎⠢⠨⠐⠮⠀⠘⠗⠍⠈⠥⠀⠕⠁⠚⠟⠀⠇⠐⠣⠢⠕⠀⠑⠒⠴⠨⠕⠀⠣⠒⠴⠣⠀⠨⠎⠢⠨⠐⠥⠀⠙⠬⠚⠡⠚⠈⠥⠨⠀⠚⠉⠵⠀⠇⠐⠣⠢⠕⠀⠕⠌⠎⠊⠥⠀⠈⠪⠀⠠⠊⠪⠄⠮⠀⠙⠱⠨⠕⠀⠑⠥⠄⠚⠉⠵⠀⠈⠻⠍⠫⠀⠑⠒⠴⠠⠪⠃⠉⠕⠊"))
+    print(b.translation("⠼⠃⠚⠁⠊⠀⠉⠡⠀⠼⠁⠁⠏⠂⠀⠼⠙⠕⠂⠀⠨⠝⠼⠊⠉⠀⠚⠽⠀⠨⠎⠢⠨⠣⠺⠀⠉⠂⠮⠀⠈⠕⠉⠱⠢⠚⠣⠱⠀⠨⠎⠢⠨⠀⠘⠾⠱⠁⠈⠕"))
