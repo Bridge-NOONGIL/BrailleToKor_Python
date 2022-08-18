@@ -9,15 +9,14 @@ middle_punctuation_list = {"⠐⠆": "·", "⠐⠂": ":", "⠦⠄": "(", "⠠⠴
 end_punctuation_list = {"⠲": ".", "⠦": "?", "⠖": "!", "⠐": ",", "⠐⠂": ":", "⠴": "\"", "⠠⠴": ")", "⠐⠴": "}","⠰⠴": "]", "⠤⠤": "~", "⠠⠠⠠": "...", "⠸⠌": "/", "⠔⠔": "*", "⠰⠆": "〃", "⠈⠺": "₩", "⠈⠙": "$", "⠠⠄": " "}
 #22 Jan 2022: "⠠⠄": 점역자 주
 
-def translatePunc(words: str):
+def translatePunc(words):
     stringWithTranslatedPunc = words
 
     for (index, word) in enumerate(words):
         word_arr = word
         word_arr = translateMiddlePunc(translateLastPunc(translateFirstPunc(word_arr)))
 
-        word_str = word_arr
-        stringWithTranslatedPunc[index] = word_str
+        stringWithTranslatedPunc[index] = word_arr
 
     return stringWithTranslatedPunc
 
@@ -52,7 +51,7 @@ def translateFirstPunc(word: str):
 
     return resultWord
         
-def translateMiddlePunc(word: str):
+def translateMiddlePunc(word):
     resultWord = word
 
     for index in range(len(resultWord)):
@@ -72,6 +71,7 @@ def translateMiddlePunc(word: str):
 
 
         if (oneWord + back_index_word + back_back_index_word) in middle_punctuation_list.keys():
+            print(resultWord)
             resultWord[index] = "."
             resultWord[index+1] = "."
             resultWord[index+2] = "."
@@ -85,7 +85,7 @@ def translateMiddlePunc(word: str):
 
         return resultWord
 
-def translateLastPunc(word: str):
+def translateLastPunc(word):
     resultWord = word
     word_count = len(word)
 
@@ -106,8 +106,8 @@ def translateLastPunc(word: str):
         resultWord[word_count-2] = "."
         resultWord[word_count-3] = "."
     
-    elif lastWord in  end_punctuation_list.keys() and (end_punctuation_list[lastWord] == "\"" or end_punctuation_list[lastWord] == "'"):
-        if end_punctuation_list[front_word] == "." or end_punctuation_list[front_word] == "," :
+    elif lastWord in end_punctuation_list.keys() and (end_punctuation_list[lastWord] == "\"" or end_punctuation_list[lastWord] == "'"):
+        if front_word in end_punctuation_list.keys() and (end_punctuation_list[front_word] == "." or end_punctuation_list[front_word] == "," ):
             punctuation_front = end_punctuation_list[front_word]
             punctuation_back = end_punctuation_list[lastWord]
             resultWord[resultWord.count-2] = punctuation_front
