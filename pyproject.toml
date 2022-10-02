@@ -3,4 +3,20 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name="BrailleToKor"
+name = "BrailleToKorean"
+version = "1.0.1"
+authors = [
+    {name="Yujin Yang", email="ureal980804@gmail.com"},
+    {name="Nayeon Kim", email="nyn2265@gmail.com" },
+]
+description = "Braille to Korean translation python package"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Bridge-NOONGIL/BrailleToKor_Python"
