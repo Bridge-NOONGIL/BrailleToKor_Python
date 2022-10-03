@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "BrailleToKorean"
-version = "1.0.1"
+version = "1.0.2"
 authors = [
     {name="Yujin Yang", email="ureal980804@gmail.com"},
     {name="Nayeon Kim", email="nyn2265@gmail.com" },
