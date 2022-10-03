@@ -4,6 +4,7 @@ from . import NumberFunc
 from .KorData import CHO, JUNG, JONG
 from .BrailleData import abb_word_dict, abb_cho_jung_jong_dict, JUNG_braille, double_JUNG_braille, JONG_braille, abb_jung_jong_dict, double_JONG_braille, double_CHO_braille, abb_CHO_braille, abb_cho_dict, CHO_braille
 
+
 brailles = ['⠀','⠮','⠐','⠼','⠫','⠩','⠯','⠄','⠷','⠾','⠡','⠬','⠠','⠤','⠨','⠌','⠴','⠂','⠆','⠒','⠲','⠢',
         '⠖','⠶','⠦','⠔','⠱','⠰','⠣','⠿','⠜','⠹','⠈','⠁','⠃','⠉','⠙','⠑','⠋','⠛','⠓','⠊','⠚','⠅',
         '⠇','⠍','⠝','⠕','⠏','⠟','⠗','⠎','⠞','⠥','⠧','⠺','⠭','⠽','⠵','⠪','⠳','⠻','⠘','⠸']
@@ -423,7 +424,7 @@ class BrailleToKor:
 
 
 
-if __name__ == "__main__":
-    b = BrailleToKor()
-    print(b.translation("⠑⠗⠉⠡⠀⠼⠁⠁⠏⠂⠀⠼⠙⠕⠂⠵⠀⠠⠦⠨⠎⠢⠨⠣⠺⠀⠉⠂⠴⠄⠕⠊⠲"))
+# if __name__ == "__main__":
+#     b = BrailleToKor()
+#     print(b.translation("⠑⠗⠉⠡⠀⠼⠁⠁⠏⠂⠀⠼⠙⠕⠂⠵⠀⠠⠦⠨⠎⠢⠨⠣⠺⠀⠉⠂⠴⠄⠕⠊⠲"))
     
