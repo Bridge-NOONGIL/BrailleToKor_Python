@@ -84,13 +84,13 @@ def translateMiddlePunc(word):
             resultWord[index+2] = "."
         elif (oneWord + back_index_word) in middle_punctuation_list.keys():
             punctuation = middle_punctuation_list[oneWord + back_index_word]
-            resultWord = resultWord[1:]  # 하나를 지우고
+            # resultWord = resultWord[index:]  # 하나를 지우고
             resultWord[index] = punctuation
         elif oneWord in middle_punctuation_list.keys():
             punctuation = middle_punctuation_list[oneWord]
             resultWord[index] = punctuation
 
-        return "".join(resultWord)
+    return "".join(resultWord)
 
 
 def translateLastPunc(word):
