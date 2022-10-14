@@ -4,6 +4,12 @@
 
 BrailleToKor Python package that translates braille string to Korean.
 
+## Quick Start
+
+```shell
+$ pip install BrailleToKorean
+```
+
 ## Usage Example
 ```python
 from BrailleToKorean.BrailleToKor import BrailleToKor
